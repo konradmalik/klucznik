@@ -5,8 +5,8 @@ type Result<T> = anyhow::Result<T>;
 const TIMEOUT: Duration = Duration::from_secs(5);
 
 fn main() -> Result<()> {
-    let ssh_dir = ssh_user_dir_location()?;
-    println!("ssh dir is: {}\n", ssh_dir.display());
+    let authorized_keys_location = authorized_keys_location()?;
+    println!("ssh dir is: {}\n", authorized_keys_location.display());
 
     let urls = vec![
         "https://github.com/konradmalik.keys",
@@ -28,10 +28,11 @@ pub fn url_contents_to_string(url: &str, timeout: Duration) -> Result<String> {
     req.into_string().map_err(anyhow::Error::from)
 }
 
-pub fn ssh_user_dir_location() -> Result<PathBuf> {
+pub fn authorized_keys_location() -> Result<PathBuf> {
+    let relative_authorized_keys_path = PathBuf::from(".ssh").join("authorized_keys");
     directories::UserDirs::new()
-        .ok_or(anyhow::format_err!("cannot get HOME dir for current user"))
-        .map(|ud| ud.home_dir().join(".ssh"))
+        .ok_or_else(|| anyhow::format_err!("cannot get current user dirs"))
+        .map(|ud| ud.home_dir().join(relative_authorized_keys_path))
 }
 
 #[cfg(test)]
@@ -40,12 +41,11 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_user_ssh_dir() {
-        let ssh_dir = ssh_user_dir_location();
-        assert!(ssh_dir.is_ok(), "ssh dir must be returned");
+    fn test_authorized_keys_location() {
+        let authorized_keys = authorized_keys_location();
         assert!(
-            ssh_dir.unwrap().is_dir(),
-            "ssh dir must exist and be a directory"
+            authorized_keys.is_ok(),
+            "authorized_keys location must be returned"
         );
     }
 }

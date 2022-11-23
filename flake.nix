@@ -13,51 +13,62 @@
           inherit system;
         };
         cargoToml = with builtins; (fromTOML (readFile ./Cargo.toml));
-        rustPlatform = pkgs.rustPlatform;
+        name = cargoToml.package.name;
+        commonArgs = {
+          src = with pkgs.lib; cleanSourceWith {
+            src = self;
+            # a function that returns a bool determining if the path should be included in the cleaned source
+            filter = path: type:
+              let
+                # filename
+                baseName = builtins.baseNameOf (toString path);
+                # path from root directory
+                path' = builtins.replaceStrings [ "${self}/" ] [ "" ] path;
+                # checks if path is in the directory
+                inDirectory = directory: hasPrefix directory path';
+              in
+              inDirectory "src" ||
+              inDirectory "tests" ||
+              hasPrefix "Cargo" baseName ||
+              baseName == "info.toml";
+          };
+          cargoLock.lockFile = ./Cargo.lock;
+          version = cargoToml.package.version;
+        };
       in
       {
         # nix build
-        packages.default = rustPlatform.buildRustPackage {
-          pname = cargoToml.package.name;
-          version = cargoToml.package.version;
+        packages = {
+          default = self.packages.${system}.klucznik;
 
-          src = ./.;
+          klucznik = pkgs.rustPlatform.buildRustPackage (commonArgs // {
+            pname = name;
+          });
 
-          cargoLock.lockFile = ./Cargo.lock;
-
-          # run tests in check phase in debug mode instead of release
-          # tests run on each build automatically
-          checkType = "debug";
+          clippy = pkgs.rustPlatform.buildRustPackage (commonArgs // {
+            pname = "${name}-clippy";
+            doCheck = false;
+            buildPhase = ''
+              cargo clippy -- --deny warnings 2>&1 | tee clippy.txt
+            '';
+            installPhase = ''
+              mkdir -p $out/reports
+              cp clippy.txt $out/reports/
+            '';
+            nativeBuildInputs = with pkgs; [ clippy ];
+          });
         };
 
-
         # nix flake check
+        # checks have to access to the internet and no home
         checks =
           {
-            cargo-check = pkgs.runCommand "cargo-check"
-              {
-                nativeBuildInputs = with pkgs; [ cargo ];
-              }
-              ''
-                cp -r ${./.}/. ./
-                cargo check
-                touch $out
-              '';
             rustfmt = pkgs.runCommand "rustfmt"
               {
                 nativeBuildInputs = with pkgs; [ cargo rustfmt ];
               }
               ''
                 cargo fmt --manifest-path ${./.}/Cargo.toml --all --check
-                touch $out
-              '';
-            clippy = pkgs.runCommand "clippy"
-              {
-                nativeBuildInputs = with pkgs; [ cargo clippy ];
-              }
-              ''
-                cp -r ${./.}/. ./
-                cargo clippy -- -D warnings
                 touch $out
               '';
             nixfmt = pkgs.runCommand "nixfmt"
@@ -74,6 +85,8 @@
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
             cargo
+            rustc
+            rust-analyzer
             rustfmt
             clippy
             nixpkgs-fmt
