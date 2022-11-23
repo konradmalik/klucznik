@@ -1,3 +1,5 @@
+result
+
 # Created by https://www.toptal.com/developers/gitignore/api/rust,linux,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=rust,linux,macos
 
@@ -65,8 +67,3 @@ Cargo.lock
 *.pdb
 
 # End of https://www.toptal.com/developers/gitignore/api/rust,linux,macos
-
-
-# Added by cargo
-
-/target
