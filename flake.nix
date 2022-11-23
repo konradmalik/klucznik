@@ -72,7 +72,12 @@
 
         # nix develop
         devShells.default = pkgs.mkShell {
-          nativeBuildInputs = [ pkgs.cargo ];
+          nativeBuildInputs = with pkgs; [
+            cargo
+            rustfmt
+            clippy
+            nixpkgs-fmt
+          ];
         };
 
         # nix fmt
