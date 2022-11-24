@@ -29,8 +29,7 @@
               in
               inDirectory "src" ||
               inDirectory "tests" ||
-              hasPrefix "Cargo" baseName ||
-              baseName == "info.toml";
+              hasPrefix "Cargo" baseName;
           };
           cargoLock.lockFile = ./Cargo.lock;
           version = cargoToml.package.version;
@@ -45,7 +44,7 @@
             pname = name;
           });
 
-          clippy = pkgs.rustPlatform.buildRustPackage (commonArgs // {
+          klucznikClippy = pkgs.rustPlatform.buildRustPackage (commonArgs // {
             pname = "${name}-clippy";
             doCheck = false;
             buildPhase = ''
