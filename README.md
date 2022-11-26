@@ -10,26 +10,23 @@ Manage your ssh access automatically.
 
 ## Roadmap
 
-### v1
+### v0.1 'Not much more than `curl` replacement but works'
 
 - [ ] synchronize authorized_keys from public URLs to any local file
 - [ ] remove duplicate keys
 - [ ] configurable via command-line arguments/flags and ENV variables
 
-### v1.1
+### v0.2 `curl` with centralized config
 
 - [ ] config file support (remote + local)
 - [ ] able to read/store host-specific configuration
 
-### v1.2
+### v0.3
 
 - [ ] add authenticated (private) URLs support
 
-### v2
+### v1
 
 - [ ] add `AuthorizedKeysCommand` support (ability to use this instead of `ssh-key-dir`.
-
-### v2.1
-
 - [ ] ability to authorize directly from URLs (use `AuthorizedKeysCommand` and no `authorized_keys`
-- [ ] cache data properly so that it can still authenticate if Github/Gitlab is currently down.
+- [ ] make sure cache data properly so that it can still authenticate if Github/Gitlab is currently down.
