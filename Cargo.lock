@@ -135,6 +135,7 @@ dependencies = [
  "anyhow",
  "directories",
  "ureq",
+ "url",
 ]
 
 [[package]]
