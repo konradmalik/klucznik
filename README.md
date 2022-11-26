@@ -4,11 +4,32 @@
 
 # klucznik
 
-Clean and keep your authorized_keys up-to-date automatically.
+**This program is work-in-progress and for personal purposes. It is nowhere near ready to be used anywhere (but will be :) )**
 
-## Notes/TODOs
+Manage your ssh access automatically.
 
-- [ ] provide one or more urls as arguments
-- [ ] read config from local file
-- [ ] read config from remote file
-- [ ] write destination - authorized_keys or authorized_keys.d for tools such like CoreOS's `ssh-key-dir`
+## Roadmap
+
+### v1
+
+- [ ] synchronize authorized_keys from public URLs to any local file
+- [ ] remove duplicate keys
+- [ ] configurable via command-line arguments/flags and ENV variables
+
+### v1.1
+
+- [ ] config file support (remote + local)
+- [ ] able to read/store host-specific configuration
+
+### v1.2
+
+- [ ] add authenticated (private) URLs support
+
+### v2
+
+- [ ] add `AuthorizedKeysCommand` support (ability to use this instead of `ssh-key-dir`.
+
+### v2.1
+
+- [ ] ability to authorize directly from URLs (use `AuthorizedKeysCommand` and no `authorized_keys`
+- [ ] cache data properly so that it can still authenticate if Github/Gitlab is currently down.
