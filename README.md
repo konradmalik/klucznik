@@ -6,15 +6,16 @@
 
 **This program is work-in-progress and for personal purposes. It is nowhere near ready to be used anywhere (but will be :) )**
 
-Manage your ssh access automatically.
+Manage your ssh access keys automatically.
 
 ## Roadmap
 
-### v0.1 'Not much more than `curl` replacement but works'
+### v0.1 'Not much more than overengineered `curl` replacement but works'
 
-- [ ] synchronize authorized_keys from public URLs to any local file
+- [x] configurable via command-line arguments/flags
+- [x] get authorized_keys from public URLs
+- [ ] validate if in fact keys are returned
 - [ ] remove duplicate keys
-- [ ] configurable via command-line arguments/flags and ENV variables
 
 ### v0.2 `curl` with centralized config
 
