@@ -1,4 +1,5 @@
 use std::path::PathBuf;
+use std::time::Duration;
 
 use anyhow::anyhow;
 use url::Url;
@@ -10,6 +11,8 @@ use crate::Result;
 pub struct Config {
     pub destination: Option<PathBuf>,
     pub sources: Vec<Url>,
+    pub timeout: Duration,
+    pub filter_prefix: String,
 }
 
 impl Config {
@@ -24,6 +27,8 @@ impl Config {
         let config = Config {
             destination: destination_path,
             sources: sources_urls,
+            timeout: Duration::from_secs(args.timeout),
+            filter_prefix: args.filter_prefix,
         };
 
         match config.validate() {
@@ -50,18 +55,26 @@ mod tests {
         let mut args = Args {
             destination: None,
             sources: vec!["https://example.com".to_owned()],
+            timeout: 12,
+            filter_prefix: "".to_owned(),
         };
         let mut config = Config::new_from_args(args).unwrap();
         assert!(config.destination.is_none());
         assert!(config.sources.len() == 1);
+        assert!(config.timeout.as_secs() == 12);
+        assert!(config.filter_prefix.is_empty());
 
         args = Args {
             destination: Some("/tmp/file".to_owned()),
             sources: vec!["https://example.com".to_owned()],
+            timeout: 12,
+            filter_prefix: "ssh".to_owned(),
         };
         config = Config::new_from_args(args).unwrap();
         assert!(config.destination.is_some());
         assert!(config.sources.len() == 1);
+        assert!(config.timeout.as_secs() == 12);
+        assert!(config.filter_prefix == "ssh");
     }
 
     #[test]
@@ -69,6 +82,8 @@ mod tests {
         let args = Args {
             destination: None,
             sources: vec![],
+            timeout: 12,
+            filter_prefix: "".to_owned(),
         };
         assert!(Config::new_from_args(args).is_err())
     }

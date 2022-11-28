@@ -4,8 +4,6 @@
 
 # klucznik
 
-**This program is work-in-progress and for personal purposes. It is nowhere near ready to be used anywhere (but will be :) )**
-
 Manage your ssh access keys automatically.
 
 ## Roadmap
@@ -14,8 +12,9 @@ Manage your ssh access keys automatically.
 
 - [x] configurable via command-line arguments/flags
 - [x] get authorized_keys from public URLs
-- [ ] validate if in fact keys are returned
-- [ ] remove duplicate keys
+- [x] validate if in fact keys are returned (basic)
+- [ ] save to file
+- [ ] automated cargo release
 
 ### v0.2 `curl` with centralized config
 

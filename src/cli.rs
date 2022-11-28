@@ -12,6 +12,14 @@ pub struct Args {
     /// Urls to get the public keys from
     #[arg(short, long, required=true, num_args = 1..)]
     pub sources: Vec<String>,
+
+    /// Request timeout in seconds
+    #[arg(short, long, default_value = "5")]
+    pub timeout: u64,
+
+    /// Prefix used to filter lines in the output (matching will be kept)
+    #[arg(short, long, default_value = "ssh-")]
+    pub filter_prefix: String,
 }
 
 pub fn parse_args() -> Args {
