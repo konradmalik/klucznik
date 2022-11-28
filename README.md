@@ -19,7 +19,7 @@ $ cargo install --locked klucznik
 Install the binary to some globally accessible place:
 
 ```bash
-$ install ~/.cargo/bin/klucznik /usr/local/bin/klucznik
+$ sudo install ~/.cargo/bin/klucznik /usr/local/bin/klucznik
 ```
 
 ### As `authorized_keys` updater
