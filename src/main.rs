@@ -1,4 +1,6 @@
 use crate::config::Config;
+use anyhow::anyhow;
+use std::fs;
 use std::io::{self, Write};
 mod cli;
 mod config;
@@ -13,10 +15,13 @@ fn main() -> Result<()> {
 
     for url in config.sources {
         let authorized_keys = keys::url_to_keys(&url, &config.filter_prefix, &config.timeout)?;
+
         match config.destination {
             Some(ref dest) => {
-                // TODO save to file if destination provided
-                println!("saving key {} to {}", authorized_keys, dest.display());
+                if dest.parent().is_some() && !dest.is_dir() {
+                    return Err(anyhow!("destination parent folder must exist"));
+                }
+                fs::write(dest, authorized_keys)?;
             }
             None => io::stdout().write_all(authorized_keys.as_bytes())?,
         }

@@ -13,8 +13,8 @@ Manage your ssh access keys automatically.
 - [x] configurable via command-line arguments/flags
 - [x] get authorized_keys from public URLs
 - [x] validate if in fact keys are returned (basic)
-- [ ] save to file
-- [ ] automated cargo release
+- [x] save to file
+- [x] automated cargo release
 
 ### v0.2 '`curl` with centralized config'
 
