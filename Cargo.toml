@@ -9,14 +9,6 @@ description = "Manage your ssh access keys automatically."
 readme = "README.md"
 version = "0.1.0"
 
-[package.metadata.release]
-sign-commit = true
-sign-tag = true
-push = false
-publish = false
-pre-release-commit-message = "cargo: klucznik release {{version}}"
-tag-message = "klucznik v{{version}}"
-
 [dependencies]
 anyhow = "1.0.66"
 clap = {"version" = "4.0.27", features = ["derive"]}
