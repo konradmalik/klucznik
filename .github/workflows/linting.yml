@@ -22,7 +22,7 @@ jobs:
         with:
           command: check
 
-  lints:
+  lint:
     name: Lints
     runs-on: ubuntu-latest
     steps:
