@@ -16,7 +16,7 @@ Manage your ssh access keys automatically.
 - [ ] save to file
 - [ ] automated cargo release
 
-### v0.2 `curl` with centralized config
+### v0.2 '`curl` with centralized config'
 
 - [ ] config file support (remote + local)
 - [ ] able to read/store host-specific configuration
