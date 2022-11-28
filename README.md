@@ -18,6 +18,7 @@ Manage your ssh access keys automatically.
 
 ### v0.2 '`curl` with centralized config'
 
+- [ ] deduplicate keys
 - [ ] config file support (remote + local)
 - [ ] able to read/store host-specific configuration
 
@@ -27,6 +28,7 @@ Manage your ssh access keys automatically.
 
 ### v1
 
-- [ ] add `AuthorizedKeysCommand` support (ability to use this instead of `ssh-key-dir`.
+- [ ] refine `AuthorizedKeysCommand` support (ability to use this instead of `ssh-key-dir`.
 - [ ] ability to authorize directly from URLs (use `AuthorizedKeysCommand` and no `authorized_keys`
 - [ ] make sure cache data properly so that it can still authenticate if Github/Gitlab is currently down.
+- [ ] ability to chain commands in `AuthorizedKeysCommand`
