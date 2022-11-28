@@ -4,7 +4,52 @@
 
 # klucznik
 
-Manage your ssh access keys automatically.
+Manage your ssh access keys automatically by for ex. synchronizing them from github.
+
+## Installation
+
+```
+$ cargo install --locked klucznik
+```
+
+## Usage
+
+### Install the binary (optional)
+
+Install the binary to some globally accessible place:
+
+```bash
+$ install ~/.cargo/bin/klucznik /usr/local/bin/klucznik
+```
+
+### As `authorized_keys` updater
+
+_warning_ this will overwrite your `authorized_keys` file!
+
+Set-up a cron job similar to this:
+
+```bash
+*/5 * * * * /usr/local/bin/klucznik --source https://github.com/<your username>.keys --destination /home/<user>/.ssh/authorized_keys
+```
+
+You can add more sources via more flags.
+
+Alternatively, use [ssh-key-dir](https://github.com/coreos/ssh-key-dir) to not overwrite your `authorized_keys`:
+
+```bash
+*/5 * * * * /usr/local/bin/klucznik --source https://github.com/<your username>.keys --destination /home/<user>/.ssh/authorized_keys.d/klucznik
+```
+
+Then configure your `AuthorizedKeysCommand` in `sshd_config` to use `ssh-key-dir` to that ssh reads your overlays from that folder.
+
+### As `AuthorizedKeysCommand` (experimental!)
+
+Change the following settings in your `sshd_config`:
+
+```
+AuthorizedKeysCommand /usr/local/bin/klucznik --source https://github.com/<username>.keys
+AuthorizedKeysCommandUser root
+```
 
 ## Roadmap
 
