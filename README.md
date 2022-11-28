@@ -62,6 +62,10 @@ AuthorizedKeysCommandUser root
 - [x] save to file
 - [x] automated cargo release
 
+### v0.1.1
+
+- [ ] if destination is provided, and file-contents are the same, don't overwrite
+
 ### v0.2 '`curl` with centralized config'
 
 - [ ] deduplicate keys
