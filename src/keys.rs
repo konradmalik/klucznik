@@ -32,7 +32,7 @@ impl PublicSSHKey {
         let comment = elems
             .get(2..)
             .map(|x| x.join(" "))
-            .unwrap_or("".to_string());
+            .unwrap_or_else(|| "".to_string());
         Ok(PublicSSHKey {
             algorithm: algo.trim().to_string(),
             key: key.trim().to_string(),
