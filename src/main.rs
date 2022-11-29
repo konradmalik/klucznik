@@ -13,7 +13,7 @@ fn main() -> Result<()> {
     let config = Config::new_from_args(args)?;
 
     for url in config.sources {
-        let authorized_keys = keys::url_to_keys(&url, &config.filter_prefix, &config.timeout)?;
+        let authorized_keys = keys::url_to_keys(&url, &config.timeout)?;
 
         match config.destination {
             Some(ref dest) => files::write_keys_to_file(authorized_keys.as_str(), dest)?,

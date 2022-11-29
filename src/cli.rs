@@ -16,10 +16,6 @@ pub struct Args {
     /// Request timeout in seconds
     #[arg(short, long, default_value = "5")]
     pub timeout: u64,
-
-    /// Prefix used to filter lines in the output (matching will be kept)
-    #[arg(short, long, default_value = "ssh-")]
-    pub filter_prefix: String,
 }
 
 pub fn parse_args() -> Args {
