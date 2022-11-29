@@ -16,11 +16,9 @@ pub struct PublicSSHKey {
 impl PublicSSHKey {
     pub fn maybe_from_string(s: &str) -> Result<Self> {
         let elems: Vec<&str> = s.split_whitespace().collect();
-        let elems_len = elems.len();
-        if !(2..=3).contains(&elems_len) {
+        if elems.len() < 2 {
             return Err(anyhow!(
-                "cannot create PublicSSHKey from {} elements",
-                elems_len
+                "cannot create PublicSSHKey from less than 2 elements"
             ));
         }
         let algo = elems[0];
@@ -31,7 +29,10 @@ impl PublicSSHKey {
             ));
         }
         let key = elems[1];
-        let comment = elems.get(2).unwrap_or(&"");
+        let comment = elems
+            .get(2..)
+            .map(|x| x.join(" "))
+            .unwrap_or("".to_string());
         Ok(PublicSSHKey {
             algorithm: algo.trim().to_string(),
             key: key.trim().to_string(),
@@ -75,7 +76,7 @@ mod tests {
         let lines = vec![
             ("something", false),
             ("ssh-key abc comment", true),
-            ("ssh-key abc comment test", false),
+            ("ssh-key abc comment test", true),
             ("ssh-key abc", true),
             ("key lelele test", false),
             ("ssh lelele test", false),
@@ -96,6 +97,10 @@ mod tests {
     fn test_whitespace() {
         let lines = vec![
             ("ssh-key abc comment", "ssh-key abc comment"),
+            (
+                "ssh-key abc comment with spaces",
+                "ssh-key abc comment with spaces",
+            ),
             ("ssh-key abc", "ssh-key abc"),
             ("    ssh-key abc", "ssh-key abc"),
             ("ssh-key abc comment               ", "ssh-key abc comment"),
