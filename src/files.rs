@@ -1,4 +1,6 @@
 use std::fs;
+use std::io::Write;
+use std::os::unix::fs::OpenOptionsExt;
 use std::path::Path;
 
 use crate::Result;
@@ -17,11 +19,21 @@ pub fn write_keys_to_file(keys: &str, destination: &Path) -> Result<()> {
             return Ok(());
         }
     }
-    fs::write(destination, keys).map_err(|e| anyhow::format_err!(e))
+    // make sure permissions are ok
+    let mut file = fs::OpenOptions::new()
+        .truncate(true)
+        .create(true)
+        .write(true)
+        .mode(0o100600)
+        .open(destination)?;
+    file.write_all(keys.as_bytes())
+        .map_err(|e| anyhow::format_err!(e))
 }
 
 #[cfg(test)]
 mod tests {
+    use std::os::unix::prelude::PermissionsExt;
+
     use super::*;
 
     #[test]
@@ -76,6 +88,9 @@ mod tests {
         write_keys_to_file(keys, &dest_buf).unwrap();
         let new_metadata = fs::metadata(&dest_buf).unwrap();
         assert!(old_metadata.modified().unwrap() == new_metadata.modified().unwrap());
+        // assert correct permissions
+        let mode = old_metadata.permissions().mode();
+        assert!(mode == 0o100600, "mode was: {:o}", mode);
 
         temp_dir.close().expect("problems removing temp dir");
     }

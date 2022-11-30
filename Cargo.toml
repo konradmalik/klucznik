@@ -7,7 +7,7 @@ exclude = ["/flake.nix", "./flake.lock", "/.github", "/.gitignore"]
 authors = [ "Konrad Malik <https://github.com/konradmalik>" ]
 description = "Manage your ssh access keys automatically."
 readme = "README.md"
-version = "0.1.1"
+version = "0.1.2"
 
 [dependencies]
 anyhow = "1.0.66"
