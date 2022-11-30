@@ -30,7 +30,7 @@ _warning_ this will overwrite your `authorized_keys` file!
 Set-up a cron job similar to this:
 
 ```bash
-* 12 * * * /usr/local/bin/klucznik --source https://github.com/<your username>.keys --destination /home/<user>/.ssh/authorized_keys
+* 12 * * * /usr/local/bin/klucznik --sources https://github.com/<your username>.keys --destination /home/<user>/.ssh/authorized_keys
 ```
 
 You can add more sources via more flags.
@@ -38,7 +38,7 @@ You can add more sources via more flags.
 Alternatively, use [ssh-key-dir](https://github.com/coreos/ssh-key-dir) to not overwrite your `authorized_keys`:
 
 ```bash
-* 12 * * * /usr/local/bin/klucznik --source https://github.com/<your username>.keys --destination /home/<user>/.ssh/authorized_keys.d/klucznik
+* 12 * * * /usr/local/bin/klucznik --sources https://github.com/<your username>.keys --destination /home/<user>/.ssh/authorized_keys.d/klucznik
 ```
 
 Then configure your `AuthorizedKeysCommand` in `sshd_config` to use `ssh-key-dir` to that ssh reads your overlays from that folder.
@@ -48,7 +48,7 @@ Then configure your `AuthorizedKeysCommand` in `sshd_config` to use `ssh-key-dir
 Change the following settings in your `sshd_config`:
 
 ```
-AuthorizedKeysCommand /usr/local/bin/klucznik --source https://github.com/<username>.keys
+AuthorizedKeysCommand /usr/local/bin/klucznik --sources https://github.com/<username>.keys
 AuthorizedKeysCommandUser root
 ```
 
