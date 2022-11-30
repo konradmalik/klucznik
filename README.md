@@ -64,8 +64,9 @@ AuthorizedKeysCommandUser root
 
 ### v0.1.1
 
-- [ ] if destination is provided, and file-contents are the same, don't overwrite
-- [ ] if returned keys are empty, don't overwrite
+- [x] fix writing multiple sources to one file
+- [x] if destination is provided, and file-contents are the same, don't overwrite
+- [x] if returned keys are empty, don't overwrite
 
 ### v0.2 '`curl` with centralized config'
 

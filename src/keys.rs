@@ -51,10 +51,6 @@ impl PublicSSHKey {
         })
     }
 
-    pub fn hash(&self) -> String {
-        sha256::digest(self.to_string())
-    }
-
     fn valid_algo(s: &str) -> bool {
         for alg in ALGORITHMS {
             if s.starts_with(alg) {
@@ -176,7 +172,6 @@ mod tests {
 
     #[test]
     fn test_concatenate_keys_to_string() {
-        let keys = vec![PublicSSHKey::maybe_from_string("ssh-rsa abc comment").unwrap()];
         let strings = vec!["# test\ntest\n".to_owned()];
         let concat = concatenate_key_strings(strings);
         // adds additional line at the end to separate groups of keys
