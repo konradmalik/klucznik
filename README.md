@@ -68,6 +68,10 @@ AuthorizedKeysCommandUser root
 - [x] if destination is provided, and file-contents are the same, don't overwrite
 - [x] if returned keys are empty, don't overwrite
 
+### v0.1.2
+
+- [x] fix created file permissions to 600
+
 ### v0.2 '`curl` with centralized config'
 
 - [ ] deduplicate keys
