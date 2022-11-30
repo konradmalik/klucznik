@@ -72,12 +72,22 @@ impl fmt::Display for PublicSSHKey {
     }
 }
 
-pub fn keys_to_string(url: &Url, keys: Vec<PublicSSHKey>) -> Result<String> {
-    if keys.is_empty() {
-        return Err(anyhow!("no valid keys from '{}'", url));
+pub fn concatenate_key_strings(strs: Vec<String>) -> String {
+    let mut buf = String::new();
+    for s in strs {
+        buf.push_str(&format!("{}\n", s));
     }
-    let keys_string = keys.iter().fold(String::new(), |s, l| s + l.to_string().as_str() + "\n");
-    Ok(format!("# keys from {}\n{}", url, keys_string))
+    buf
+}
+
+pub fn keys_to_string(source: &str, keys: Vec<PublicSSHKey>) -> Result<String> {
+    if keys.is_empty() {
+        return Err(anyhow!("no valid keys from '{}'", source));
+    }
+    let keys_string = keys
+        .iter()
+        .fold(String::new(), |s, l| s + l.to_string().as_str() + "\n");
+    Ok(format!("# keys from {}\n{}", source, keys_string))
 }
 
 pub fn url_to_keys(url: &Url, timeout: &Duration) -> Result<Vec<PublicSSHKey>> {
@@ -122,7 +132,7 @@ mod tests {
     }
 
     #[test]
-    fn test_whitespace() {
+    fn test_key_whitespace() {
         let lines = vec![
             ("ssh-rsa abc comment", "ssh-rsa abc comment"),
             (
@@ -146,5 +156,30 @@ mod tests {
                 line.1
             );
         }
+    }
+
+    #[test]
+    fn test_keys_to_string() {
+        let keys = vec![PublicSSHKey::maybe_from_string("ssh-rsa abc comment").unwrap()];
+        let source = "https://example.com";
+        let res = keys_to_string(source, keys).unwrap();
+        // one after source, one after key
+        assert!(res.lines().count() == 2);
+    }
+
+    #[test]
+    fn test_empty_keys_to_string() {
+        let keys = vec![];
+        let source = "https://example.com";
+        assert!(keys_to_string(source, keys).is_err());
+    }
+
+    #[test]
+    fn test_concatenate_keys_to_string() {
+        let keys = vec![PublicSSHKey::maybe_from_string("ssh-rsa abc comment").unwrap()];
+        let strings = vec!["# test\ntest\n".to_owned()];
+        let concat = concatenate_key_strings(strings);
+        // adds additional line at the end to separate groups of keys
+        assert!(concat.lines().count() == 3);
     }
 }
