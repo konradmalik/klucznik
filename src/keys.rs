@@ -95,9 +95,9 @@ mod tests {
     fn test_key_creation() {
         let lines = vec![
             ("something", false),
-            ("ssh-key abc comment", true),
-            ("ssh-key abc comment test", true),
-            ("ssh-key abc", true),
+            ("ssh-rsa abc comment", true),
+            ("ssh-rsa abc comment test", true),
+            ("ssh-rsa abc", true),
             ("key lelele test", false),
             ("ssh lelele test", false),
             ("# comment key", false),
@@ -116,18 +116,18 @@ mod tests {
     #[test]
     fn test_whitespace() {
         let lines = vec![
-            ("ssh-key abc comment", "ssh-key abc comment"),
+            ("ssh-rsa abc comment", "ssh-rsa abc comment"),
             (
-                "ssh-key abc comment with spaces",
-                "ssh-key abc comment with spaces",
+                "ssh-rsa abc comment with spaces",
+                "ssh-rsa abc comment with spaces",
             ),
-            ("ssh-key abc", "ssh-key abc"),
-            ("    ssh-key abc", "ssh-key abc"),
-            ("ssh-key abc comment               ", "ssh-key abc comment"),
-            ("ssh-key              abc comment", "ssh-key abc comment"),
+            ("ssh-rsa abc", "ssh-rsa abc"),
+            ("    ssh-rsa abc", "ssh-rsa abc"),
+            ("ssh-rsa abc comment               ", "ssh-rsa abc comment"),
+            ("ssh-rsa              abc comment", "ssh-rsa abc comment"),
             (
-                "ssh-key              abc         comment",
-                "ssh-key abc comment",
+                "ssh-rsa              abc         comment",
+                "ssh-rsa abc comment",
             ),
         ];
         for line in lines {
