@@ -51,6 +51,10 @@ impl PublicSSHKey {
         })
     }
 
+    pub fn hash(&self) -> String {
+        sha256::digest(self.to_string())
+    }
+
     fn valid_algo(s: &str) -> bool {
         for alg in ALGORITHMS {
             if s.starts_with(alg) {
@@ -68,16 +72,20 @@ impl fmt::Display for PublicSSHKey {
     }
 }
 
-pub fn url_to_keys(url: &Url, timeout: &Duration) -> Result<String> {
+pub fn keys_to_string(url: &Url, keys: Vec<PublicSSHKey>) -> Result<String> {
+    if keys.is_empty() {
+        return Err(anyhow!("no valid keys from '{}'", url));
+    }
+    let keys_string = keys.iter().fold(String::new(), |s, l| s + l.to_string().as_str() + "\n");
+    Ok(format!("# keys from {}\n{}", url, keys_string))
+}
+
+pub fn url_to_keys(url: &Url, timeout: &Duration) -> Result<Vec<PublicSSHKey>> {
     let url_contents = url_contents_to_string(url, timeout)?;
-    let keys = url_contents.lines().flat_map(|l| {
-        PublicSSHKey::maybe_from_string(l).map_err(|e| {
-            eprintln!("{}", e);
-            e
-        })
-    });
-    let keys_string = keys.fold(String::new(), |s, l| s + l.to_string().as_str() + "\n");
-    Ok(format!("# keys from {}\n{}\n", url, keys_string))
+    Ok(url_contents
+        .lines()
+        .flat_map(PublicSSHKey::maybe_from_string)
+        .collect())
 }
 
 fn url_contents_to_string(url: &Url, timeout: &Duration) -> Result<String> {
