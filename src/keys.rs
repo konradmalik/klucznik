@@ -4,7 +4,17 @@ use std::fmt;
 use std::time::Duration;
 use url::Url;
 
-const ALGORITHM_PREFIX: &str = "ssh-";
+// from https://gitlab.com/-/profile/keys
+const ALGORITHMS: &[&str] = &[
+    "ssh-rsa",
+    "ssh-dss",
+    "ecdsa-sha2-nistp256",
+    "ecdsa-sha2-nistp384",
+    "ecdsa-sha2-nistp521",
+    "ssh-ed25519",
+    "sk-ecdsa-sha2-nistp256@openssh.com",
+    "sk-ssh-ed25519@openssh.com",
+];
 
 pub struct PublicSSHKey {
     pub algorithm: String,
@@ -22,22 +32,32 @@ impl PublicSSHKey {
             ));
         }
         let algo = elems[0];
-        if !algo.starts_with(ALGORITHM_PREFIX) {
+        if !Self::valid_algo(algo) {
             return Err(anyhow!(
-                "cannot interpret algorithm that does not start with '{}'",
-                ALGORITHM_PREFIX
+                "cannot interpret algorithm that does not match with one of the allowed ones"
             ));
         }
+
         let key = elems[1];
         let comment = elems
             .get(2..)
             .map(|x| x.join(" "))
             .unwrap_or_else(|| "".to_string());
+
         Ok(PublicSSHKey {
             algorithm: algo.trim().to_string(),
             key: key.trim().to_string(),
             comment: comment.trim().to_string(),
         })
+    }
+
+    fn valid_algo(s: &str) -> bool {
+        for alg in ALGORITHMS {
+            if s.starts_with(alg) {
+                return true;
+            }
+        }
+        false
     }
 }
 
