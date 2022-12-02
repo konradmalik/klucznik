@@ -14,6 +14,9 @@
         };
         cargoToml = with builtins; (fromTOML (readFile ./Cargo.toml));
         name = cargoToml.package.name;
+        darwinBuildInputs = with pkgs;  [
+          darwin.apple_sdk.frameworks.Security
+        ];
         commonArgs = {
           src = with pkgs.lib; cleanSourceWith {
             src = self;
@@ -33,9 +36,6 @@
           };
           cargoLock.lockFile = ./Cargo.lock;
           version = cargoToml.package.version;
-          buildInputs = with pkgs;  [
-            darwin.apple_sdk.frameworks.Security
-          ];
         };
       in
       {
@@ -45,6 +45,7 @@
 
           klucznik = pkgs.rustPlatform.buildRustPackage (commonArgs // {
             pname = name;
+            buildInputs = [ ] ++ pkgs.lib.optionals pkgs.stdenv.isDarwin darwinBuildInputs;
           });
 
           klucznikClippy = pkgs.rustPlatform.buildRustPackage (commonArgs // {
