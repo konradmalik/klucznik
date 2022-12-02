@@ -33,6 +33,9 @@
           };
           cargoLock.lockFile = ./Cargo.lock;
           version = cargoToml.package.version;
+          buildInputs = with pkgs;  [
+            darwin.apple_sdk.frameworks.Security
+          ];
         };
       in
       {
