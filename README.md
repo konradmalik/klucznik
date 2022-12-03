@@ -5,6 +5,8 @@
 
 # klucznik
 
+> :warning: **Disclaimer: I use this program to learn Nix, Rust and to automate stuff for personal use.**
+
 Manage your ssh access keys automatically by for ex. synchronizing them from github.
 
 ## Installation
@@ -25,7 +27,7 @@ $ sudo install --mode 755 --owner root --group root ~/.cargo/bin/klucznik /usr/l
 
 ### As `authorized_keys` updater
 
-_warning_ this will overwrite your `authorized_keys` file!
+:warning: this will overwrite your `authorized_keys` file!
 
 Set-up a cron job similar to this:
 
