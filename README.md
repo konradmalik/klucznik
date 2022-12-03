@@ -20,7 +20,7 @@ $ cargo install --locked klucznik
 Install the binary to some globally accessible place:
 
 ```bash
-$ sudo install ~/.cargo/bin/klucznik /usr/local/bin/klucznik
+$ sudo install --mode 755 --owner root --group root ~/.cargo/bin/klucznik /usr/local/bin/klucznik
 ```
 
 ### As `authorized_keys` updater
@@ -51,6 +51,8 @@ Change the following settings in your `sshd_config`:
 AuthorizedKeysCommand /usr/local/bin/klucznik --sources https://github.com/<username>.keys
 AuthorizedKeysCommandUser root
 ```
+
+`AuthorizedKeysCommand` is pretty picky about permissions, ownership etc. of that binary file. Make sure to read the proper `man` entry.
 
 ## Roadmap
 
