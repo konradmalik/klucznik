@@ -16,7 +16,7 @@ jobs:
         run: nix flake check
 
       - name: Flake clippy
-        run: nix build .#klucznikClippy
+        run: nix build .#clippy
 
       - name: Flake build klucznik
         run: nix build
