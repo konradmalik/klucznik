@@ -16,5 +16,6 @@ mkShell {
     rustfmt
     nixpkgs-fmt
     rust-analyzer
+    yaml-language-server
   ];
 }
