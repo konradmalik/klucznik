@@ -21,14 +21,8 @@
       in
       {
         packages = {
-          default = pkgs.klucznik.klucznik;
-          klucznik = pkgs.klucznik.klucznik;
-          clippy = pkgs.klucznik.clippy;
-        };
-
-        checks = {
-          rustfmt = pkgs.klucznik.rustfmt;
-          nixfmt = pkgs.klucznik.nixfmt;
+          default = pkgs.klucznik;
+          klucznik = pkgs.klucznik;
         };
 
         devShells.default = pkgs.klucznik.shell;

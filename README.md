@@ -1,11 +1,10 @@
 [![crates.io](https://img.shields.io/crates/v/klucznik.svg)](https://crates.io/crates/klucznik)
-[![Actions Status](https://github.com/konradmalik/klucznik/actions/workflows/linting.yml/badge.svg)](https://github.com/konradmalik/klucznik/actions)
-[![Actions Status](https://github.com/konradmalik/klucznik/actions/workflows/tests.yml/badge.svg)](https://github.com/konradmalik/klucznik/actions)
-[![Actions Status](https://github.com/konradmalik/klucznik/actions/workflows/nix.yml/badge.svg)](https://github.com/konradmalik/klucznik/actions)
+[![Actions Status](https://github.com/konradmalik/klucznik/actions/workflows/main.yml/badge.svg)](https://github.com/konradmalik/klucznik/actions)
+[![Actions Status](https://github.com/konradmalik/klucznik/actions/workflows/publish.yml/badge.svg)](https://github.com/konradmalik/klucznik/actions)
 
 # klucznik
 
-> :warning: **Disclaimer: I use this program to learn Nix, Rust and to automate stuff for personal use.**
+> :warning: **Disclaimer: I use this program to learn Rust, Nix and to automate stuff for personal use.**
 
 Manage your ssh access keys automatically by for ex. synchronizing them from github.
 

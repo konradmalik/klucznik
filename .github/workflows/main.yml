@@ -1,22 +1,22 @@
 on: [push, pull_request]
 
-name: Nix flake tests
+name: fmt,lint,check,build
 jobs:
-  tests:
+  main:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
-      - uses: cachix/install-nix-action@v18
+      - uses: cachix/install-nix-action@v20
         with:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
+      - name: Flake fmt check
+        run: nix develop --command -- nixpkgs-fmt --check .
+
       - name: Flake checks
         run: nix flake check
 
-      - name: Flake clippy
-        run: nix build .#clippy
-
-      - name: Flake build klucznik
+      - name: klucznik - check build test clippy
         run: nix build

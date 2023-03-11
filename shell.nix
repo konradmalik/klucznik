@@ -9,15 +9,15 @@ let
   klucznik = callPackage ./default.nix { };
 in
 mkShell {
-  nativeBuildInputs = klucznik.klucznik.buildInputs ++ [
-    rustc
-    cargo
+  packages = klucznik.nativeBuildInputs ++ klucznik.buildInputs ++ [
+    # linters, formatters
     clippy
-    rustfmt
-    rust-analyzer
-
-    nil
-    yaml-language-server
     nixpkgs-fmt
+    rustfmt
+
+    # language servers
+    nil
+    rust-analyzer
+    yaml-language-server
   ];
 }

@@ -4,24 +4,19 @@ on:
     tags:
       - "*" # Push events to every tag not containing /
 
-name: Publish
-
+name: publish
 jobs:
-  publish:
-    name: Publish
+  tests:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout sources
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
+      - uses: cachix/install-nix-action@v20
         with:
-          profile: minimal
-          toolchain: stable
-          override: true
+          extra_nix_config: |
+            access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
-      - name: cargo publish
-        run: cargo publish
+      - name: publish to crates.io
+        run: nix develop --command -- cargo publish
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
