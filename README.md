@@ -16,6 +16,12 @@ $ cargo install --locked klucznik
 
 ## Usage
 
+> :warning:
+> **Using a program to get authorized keys or allow SSH access based on data got from a remote server could be risky and insecure.
+> If someone has control over the server you get the data from, or control over the network you're on then the attacker could easily
+> inject their own keys and get full access to your machines.
+> TL;DR use common sense!**
+
 ### Install the binary (optional)
 
 Install the binary to some globally accessible place:
