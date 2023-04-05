@@ -9,7 +9,7 @@ let
   klucznik = callPackage ./default.nix { };
 in
 mkShell {
-  packages = klucznik.nativeBuildInputs ++ klucznik.buildInputs ++ [
+  packages = klucznik.nativeBuildInputs ++ [
     # linters, formatters
     clippy
     nixpkgs-fmt
