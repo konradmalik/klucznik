@@ -10,14 +10,6 @@ let
 in
 mkShell {
   packages = klucznik.nativeBuildInputs ++ [
-    # linters, formatters
     clippy
-    nixpkgs-fmt
-    rustfmt
-
-    # language servers
-    nil
-    rust-analyzer
-    yaml-language-server
   ];
 }

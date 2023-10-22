@@ -12,9 +12,6 @@ jobs:
           extra_nix_config: |
             access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
 
-      - name: Flake fmt check
-        run: nix develop --command -- nixpkgs-fmt --check .
-
       - name: Flake checks
         run: nix flake check
 
